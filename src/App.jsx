@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import GeneratorPage from './pages/GeneratorPage';
+import SavedPage from './pages/SavedPage'; 
+import NavBar from './components/NavBar'; 
 
 function App() {
   return (
     <div>
-      <h1>Excuse Generator</h1>
-      <p>Let’s get you a great excuse!</p>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<GeneratorPage />} />
+         <Route path="/saved" element={<SavedPage />} />
+      </Routes>
     </div>
   );
 }
