@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import ExcuseForm from '../components/ExcuseForm';
 import ExcuseDisplay from '../components/ExcuseDisplay';
 
@@ -10,9 +12,17 @@ function GeneratorPage() {
     setExcuseObj(excuseData);
   };
 
-  const handleSave = () => {
-    setSavedExcuses(prev => [...prev, excuseObj]);
-    alert('Excuse saved!');
+  const handleSave = async () => {
+    try {
+      await addDoc(collection(db, 'excuses'), excuseObj);
+
+      setSavedExcuses(prev => [...prev, excuseObj]);
+
+      alert('Excuse saved to Firestore!');
+    } catch (error) {
+      console.error('Error saving excuse:', error);
+      alert('Failed to save excuse.');
+    }
   };
 
   const handleReset = () => {

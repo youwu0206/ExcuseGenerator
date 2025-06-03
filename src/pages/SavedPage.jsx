@@ -1,15 +1,31 @@
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+
 function SavedPage () {
 
-    const mockSavedExcuses = [
-        { text: "I couldn't finish it because my dog ate my router.", tone: "humorous" },
-        { text: "I was caught in traffic during a goose parade.", tone: "chill" },
-        { text: "Due to a family emergency, I couldn't submit on time.", tone: "serious" },
-    ];
+    const [excuses, setExcuses] = useState([]);
+
     const toneColors = {
         serious: '#f8d7da',
         chill: '#d1ecf1',
         humorous: '#fff3cd',
       };
+
+      useEffect(() => {
+        const fetchExcuses = async () => {
+          try {
+            const querySnapshot = await getDocs(collection(db, 'excuses'));
+            const data = querySnapshot.docs.map(doc => doc.data());
+            setExcuses(data);
+          } catch (error) {
+            console.error('Error fetching excuses:', error);
+          }
+        };
+    
+        fetchExcuses();
+      }, []);
+      
       return (
         <div>
           <h2>My Saved Excuses</h2>
@@ -19,7 +35,7 @@ function SavedPage () {
             gap: '1rem',
             marginTop: '1rem'
           }}>
-            {mockSavedExcuses.map((excuse, index) => (
+            {excuses.map((excuse, index) => (
               <div
                 key={index}
                 style={{

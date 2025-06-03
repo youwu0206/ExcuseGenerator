@@ -1,29 +1,19 @@
 import { useState } from 'react';
+import { generateExcuse } from '../api/openai';
 
 function ExcuseForm({ onGenerate }) {
   const [reason, setReason] = useState('');
   const [tone, setTone] = useState('serious');
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!reason.trim()) return;
-    
-    let excuse = '';
 
-    switch (tone) {
-      case 'serious':
-        excuse = `Due to unforeseen circumstances, I couldn't ${reason.toLowerCase()}.`;
-        break;
-      case 'chill':
-        excuse = `Hey, I just totally forgot to ${reason.toLowerCase()}, my bad!`;
-        break;
-      case 'humorous':
-        excuse = `I couldn't ${reason.toLowerCase()} because my pet goldfish needed emotional support.`;
-        break;
-      default:
-        excuse = `Something came up and I couldn't ${reason.toLowerCase()}.`;
+    try {
+      const excuseText = await generateExcuse(reason, tone);
+      onGenerate({ text: excuseText, tone });
+    } catch (err) {
+      onGenerate({ text: 'Sorry, something went wrong with the excuse generator.', tone });
     }
-
-    onGenerate({ text: excuse, tone });
   };
 
   return (
@@ -39,7 +29,7 @@ function ExcuseForm({ onGenerate }) {
         width: 'fit-content',
         marginLeft: 'auto',
         marginRight: 'auto'
-    }}>
+      }}>
         <input
           type="text"
           placeholder="e.g., finish homework"
@@ -72,7 +62,6 @@ function ExcuseForm({ onGenerate }) {
       </div>
     </div>
   );
-  
 }
 
 export default ExcuseForm;
