@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
+
 export const generateExcuse = async (reason, tone) => {
   const prompt = `Generate a ${tone} excuse for why someone couldn't ${reason}.`;
 
