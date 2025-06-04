@@ -50,7 +50,7 @@ function ExcuseForm({ onGenerate }) {
           onClick={handleGenerate}
           style={{
             padding: '0.5rem 1rem',
-            backgroundColor: '#007bff',
+            backgroundColor: '#5c7f9e',
             color: '#fff',
             borderRadius: '5px',
             cursor: 'pointer',
